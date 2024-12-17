@@ -5,6 +5,9 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   base: "chatbot-inmobiliaria",
+  define: {
+    "process.env": {}, // Reemplaza process.env con un objeto vacío
+  },
   build: {
     lib: {
       entry: "./src/embed-chatbot.tsx", // Archivo de entrada
