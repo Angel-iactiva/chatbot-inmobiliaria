@@ -1,5 +1,6 @@
 import ReactDOM from "react-dom";
 import Chatbot from './components/chatbot/ChatBot';
+import "./styles/chatbot.css"; // Importa Tailwind CSS
 
 
 // Crear y montar el contenedor del chat
