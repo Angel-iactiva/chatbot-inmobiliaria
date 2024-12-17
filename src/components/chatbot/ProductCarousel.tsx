@@ -1,38 +1,44 @@
 import React from "react";
-import { Product } from "../../types/Product";
+import { Product } from "./ChatWindow";
 
 interface ProductCarouselProps {
-  products: Product[];
-  onAction: (action: string, product: Product) => void; 
-
+  records: Product[];
 }
 
-const ProductCarousel: React.FC<ProductCarouselProps> = ({ products, onAction }) => {
+const ProductCarousel: React.FC<ProductCarouselProps> = ({ records }) => {
   return (
-    <div className="flex overflow-x-scroll space-x-4 p-4">
-      {products.map((product) => (
+    <div className="flex overflow-x-scroll space-x-4 p-4 ">
+      {records.map((record, index) => (
         <div
-          key={product.id}
-          className="min-w-[200px] bg-white shadow-md rounded-lg overflow-hidden"
+          key={index}
+          className="min-w-[200px] min-h-24 bg-white shadow-md rounded-lg overflow-hidden flex flex-col"
         >
-          <img
-            src={product.imageUrl}
-            alt={product.name}
-            className="h-40 w-full object-cover"
-          />
-          <div className="p-4">
-            <h3 className="font-bold text-lg text-primary">{product.name}</h3>
-            <p className="text-sm text-gray-600">{product.description}</p>
-            <p className="font-bold text-accent mt-2">{product.price}</p>
-            {product.actions?.map((action) => (
-              <button
-                key={action}
-                onClick={() => onAction(action, product)}
-                className="mt-2 text-sm bg-primary text-white px-4 py-1 rounded hover:bg-purple-700"
-              >
-                {action}
-              </button>
-            ))}
+          {/* Prioridad para la imagen */}
+          {record["imagen"] && (
+            <img
+              src={record["imagen"] as string}
+              alt={`Imagen ${index}`}
+              className="h-32 w-full object-cover"
+            />
+          )}
+
+          <div className="p-2 flex-1 flex flex-col space-y-1">
+            {/* Renderizado de las demás propiedades */}
+            {Object.entries(record).map(([key, value]) => {
+              // Omitimos la propiedad "imagen" porque ya la renderizamos arriba
+              if (key === "imagen") return null;
+
+              return (
+                <p key={key} className="text-xs text-gray-600 truncate">
+                  <span className="font-bold capitalize">{key}:</span>{" "}
+                  {typeof value === "boolean"
+                    ? value
+                      ? "Sí"
+                      : "No"
+                    : value}
+                </p>
+              );
+            })}
           </div>
         </div>
       ))}

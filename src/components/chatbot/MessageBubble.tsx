@@ -23,8 +23,9 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ user, text }) => {
       <div
         className={`${isUser ? "bg-user text-black" : "bg-bot text-black"
           } p-3 rounded-lg max-w-xs shadow-md`}
+           dangerouslySetInnerHTML={{ __html: text }}
       >
-        {text}
+        {/* {text} */}
       </div>
       {isUser && (
         <img
