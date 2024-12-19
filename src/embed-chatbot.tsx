@@ -8,8 +8,8 @@ const createChatbotContainer = () => {
     const container = document.createElement("div");
     container.id = "chatbot-container";
     container.style.position = "fixed";
-    container.style.bottom = "20px";
-    container.style.right = "20px";
+    // container.style.bottom = "50px";
+    // container.style.right = "30px";
     container.style.zIndex = "9999"; // Asegura que esté siempre encima
     document.body.appendChild(container);
 

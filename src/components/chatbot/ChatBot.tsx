@@ -5,7 +5,7 @@ import { useWebSocket } from "../../../services/websocket";
 
 const Chatbot: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
-    // const { messages, isConnected, sendMessage, records } = useWebSocket("ws://localhost:5000/ws"); // Establecer la URL del WebSocket
+    // const { messages, isConnected, sendMessage } = useWebSocket("ws://localhost:5000/ws"); // Establecer la URL del WebSocket
     const { messages, isConnected, sendMessage } = useWebSocket("ws://chatbot-backend-dessa-production.up.railway.app/ws"); // Establecer la URL del WebSocket
 
     return (

@@ -1,6 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  content: ["./src/**/*.{js,ts,jsx,tsx}", "./index.html"],
+  safelist: [
+    "animate-fadeIn",
+    "animate-fadeOut",
+    "animate-bounce", 
+  ],
   theme: {
     extend: {
       colors: {

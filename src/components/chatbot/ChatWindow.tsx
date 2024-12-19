@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import MessageBubble from "./MessageBubble";
 import ChatInput from "./ChatInput";
 import BotThinking from "./BotThinking";
-import QuickReplies from "./QuickReplies";
+// import QuickReplies from "./QuickReplies";
 import ProductCarousel from "./ProductCarousel";
 
 
@@ -20,23 +20,25 @@ export interface Product {
 }
 
 function parseProducts(response: string): Product[] {
-    const productRegex = /\d+\.\s\*\*(.*?)\*\* ([^\n]+)|-\s\*\*(.*?)\*\* ([^\n]+)/g; // Soporta ambos formatos
-    const propertyRegex = /\[([\w]+)\]\((.*?)\)/g; // Extrae propiedades y valores
+    // Detecta bloques de productos que comienzan con guiones o incluyen ":"
+    const productBlockRegex = /-\s\*\*(.*?)\*\*:\s([\s\S]*?)(?=\n\s*-\s\*\*|\n\s*$)/g;
+    const propertyRegex = /\[([\w]+)\]\((.*?)\)/g; // Captura propiedades en cualquier formato
 
     const products: Product[] = [];
-    let match: RegExpExecArray | null;
+    let productMatch: RegExpExecArray | null;
 
-    while ((match = productRegex.exec(response)) !== null) {
-        const productName = match[1] || match[3]; // Captura el nombre del producto
-        const propertiesString = match[2] || match[4]; // Captura las propiedades del producto
+    while ((productMatch = productBlockRegex.exec(response)) !== null) {
+        const productName = productMatch[1]; // Nombre del producto
+        const propertiesBlock = productMatch[2]; // Bloque de propiedades
 
-        const product: Product = { nombre: productName }; // Inicializa con el nombre
+        const product: Product = { nombre: productName.trim() };
         let propMatch: RegExpExecArray | null;
 
-        while ((propMatch = propertyRegex.exec(propertiesString)) !== null) {
-            const key = propMatch[1];
-            const value = propMatch[2];
-            product[key] = value;
+        // Extraer las propiedades clave-valor
+        while ((propMatch = propertyRegex.exec(propertiesBlock)) !== null) {
+            const key = propMatch[1].trim().toLowerCase();
+            const value = propMatch[2].trim();
+            product[key] = value; // Almacena la propiedad en el producto
         }
 
         products.push(product);
@@ -47,32 +49,33 @@ function parseProducts(response: string): Product[] {
 
 
 function formatResponseHTML(response: string): string {
-    const productRegex = /\d+\.\s\*\*(.*?)\*\* ([^\n]+)|-\s\*\*(.*?)\*\* ([^\n]+)/g; // Soporta ambos formatos
+    const productBlockRegex = /-\s\*\*(.*?)\*\*:\s([\s\S]*?)(?=\n\s*-\s\*\*|\n\s*$)/g;
     const propertyRegex = /\[([\w]+)\]\((.*?)\)/g;
 
-    let formattedHTML = response.split("\n")[0] + "<br>"; // Mantiene la primera línea intacta
-    let match: RegExpExecArray | null;
+    let formattedHTML = response.split("\n")[0] + "<br>"; // Mantener la primera línea
+    let productMatch: RegExpExecArray | null;
 
-    while ((match = productRegex.exec(response)) !== null) {
-        const productName = match[1] || match[3];
-        const propertiesString = match[2] || match[4];
+    while ((productMatch = productBlockRegex.exec(response)) !== null) {
+        const productName = productMatch[1];
+        const propertiesBlock = productMatch[2];
 
-        let productHTML = `<strong>- ${productName}</strong><br>`; // Título en negritas
+        let productHTML = `<strong>- ${productName.trim()}</strong><br>`; // Nombre del producto
         let propMatch: RegExpExecArray | null;
 
-        while ((propMatch = propertyRegex.exec(propertiesString)) !== null) {
-            const key = propMatch[1];
-            const value = propMatch[2];
-
+        // Extraer propiedades clave-valor
+        while ((propMatch = propertyRegex.exec(propertiesBlock)) !== null) {
+            const key = propMatch[1].trim();
+            const value = propMatch[2].trim();
             if (key.toLowerCase() === "imagen") continue; // Excluir 'imagen'
-            productHTML += `${key.charAt(0).toUpperCase() + key.slice(1)}: ${value}<br>`;
+            productHTML += `<strong>${key}:</strong> ${value}<br>`; // Formatear clave-valor
         }
 
-        formattedHTML += productHTML + "<br>"; // Salto entre productos
+        formattedHTML += productHTML + "<br>"; // Agregar salto entre productos
     }
 
     return formattedHTML;
 }
+
 
 
 
@@ -115,7 +118,9 @@ const ChatWindow: React.FC<TChatWindowProps> = ({ messages, isConnected, sendMes
 
             // Parsear productos y formatear el mensaje
             const products = parseProducts(lastMessageText);
+            console.log("Products: ", products);
             const formattedText = formatResponseHTML(lastMessageText);
+            console.log("Formatted Text: ", formattedText);
 
             console.log("Original Message:", lastMessageText);
 
@@ -153,7 +158,7 @@ const ChatWindow: React.FC<TChatWindowProps> = ({ messages, isConnected, sendMes
                 )}
             </div>
             <ChatInput onSendMessage={handleSendMessage} isDisabled={isThinking} />
-            {!isThinking && <QuickReplies onReply={handleSendMessage} />}
+            {/* {!isThinking && <QuickReplies onReply={handleSendMessage} />} */}
         </div>
     );
 };
