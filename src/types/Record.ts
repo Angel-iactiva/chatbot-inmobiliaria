@@ -1,10 +1,6 @@
 export interface Record {
-  id: string;
   description: string;
-  name: string;
-  brand: string;
   category: string;
-  subCategory: string;
   tags: string;
   aspect1: string;
   optionsAspect1: string;
@@ -17,5 +13,15 @@ export interface Record {
   price: string;
   requiresShipping: boolean;
   imageUrl: string;
-  score: number;
+  seller: string;
+  title: string;
+  type: string;
+  variantAspect1: string; 
+  variantAspect2: string; 
+  variantAspect3: string; 
+  variantOptions1: string; 
+  variantOptions2: string; 
+  variantOptions3: string; 
 }
+
+

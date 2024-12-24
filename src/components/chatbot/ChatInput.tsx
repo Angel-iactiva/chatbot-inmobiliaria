@@ -18,7 +18,7 @@ interface ChatInputProps {
     return (
       <form
         onSubmit={handleSubmit}
-        className={`flex p-4 bg-white border-t ${
+        className={`flex p-2 bg-white border-t ${
           isDisabled ? "opacity-50 cursor-not-allowed" : ""
         }`}
       >
@@ -32,7 +32,7 @@ interface ChatInputProps {
         />
         <button
           type="submit"
-          className="bg-primary text-white px-4 rounded-r-lg hover:bg-purple-700 disabled:bg-gray-400"
+          className="bg-primary text-white px-4  hover:bg-purple-700 disabled:bg-gray-400"
           disabled={isDisabled}
         >
           Enviar

@@ -23,9 +23,13 @@ export const useWebSocket = (url: string) => {
     // Al recibir un mensaje
     ws.onmessage = (event) => {
       try {
-        const data = JSON.parse(event.data);
+        const data: {
+          message: string;
+          records: Record[];
+          status: string;
+        } = JSON.parse(event.data);
         console.log("Mensaje recibido del servidor:", data);
-        setMessages((prevMessages) => [...prevMessages, data]); // Actualiza los mensajes
+        setMessages((prevMessages) => [...prevMessages, data.message]); // Actualiza los mensajes
         setRecords(data.records);
       } catch (error) {
         console.error("Error al parsear el mensaje:", error);
