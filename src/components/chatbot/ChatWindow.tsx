@@ -52,6 +52,8 @@ const ChatWindow: React.FC<TChatWindowProps> = ({ messages, isConnected, sendMes
     }, [records, messages]);
 
 
+    console.log(userMessages);
+
     return (
         <div
             className="fixed bottom-5   w-full min-h-96 max-h-[70vh] bg-secondary shadow-lg rounded-lg flex flex-col"
