@@ -9,7 +9,7 @@ interface MessageBubbleProps {
 const md = new MarkdownIt();
 
 const MessageBubble: React.FC<MessageBubbleProps> = ({ user, text }) => {
-  const isUser = user === "You";
+  const isUser = user === "human";
   const avatarUrl = isUser
     ? `https://api.dicebear.com/6.x/avataaars/svg?seed=User`
     : `https://api.dicebear.com/6.x/avataaars/svg?seed=Bot`;

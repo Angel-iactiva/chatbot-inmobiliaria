@@ -19,7 +19,7 @@ type TChatWindowProps = {
 const ChatWindow: React.FC<TChatWindowProps> = ({ messages, isConnected, sendMessage, records }) => {
     const [userMessages, setUserMessages] = useState<{ user: string; text: string; records?: Record[] }[]>([
         {
-            user: "Bot",
+            user: "ai",
             text: "¡Hola! Bienvenido a Dessa Muebles. ¿En qué puedo ayudarte hoy?",
             records: [],
         },
@@ -32,7 +32,7 @@ const ChatWindow: React.FC<TChatWindowProps> = ({ messages, isConnected, sendMes
             return;
         }
 
-        setUserMessages([...userMessages, { user: "You", text: message }]);
+        setUserMessages([...userMessages, { user: "human", text: message }]);
         setIsThinking(true);
 
         sendMessage(message);
@@ -40,16 +40,23 @@ const ChatWindow: React.FC<TChatWindowProps> = ({ messages, isConnected, sendMes
 
     useEffect(() => {
         if ((records?.length ?? 0) > 0 || messages.length > 0) {
-            const newMessage = {
-                user: "Bot",
-                text: messages[messages.length - 1] || "No records available",
-                records: records || [],
-            };
+            const newMessageText = messages[messages.length - 1] || "No records available";
 
-            setUserMessages((prev) => [...prev, newMessage]);
+            // Evita duplicados comparando el último mensaje agregado
+            if (userMessages[userMessages.length - 1]?.text !== newMessageText) {
+                const newMessage = {
+                    user: "ai",
+                    text: newMessageText,
+                    records: records || [],
+                };
+
+                setUserMessages((prev) => [...prev, newMessage]);
+            }
+
             setIsThinking(false);
         }
     }, [records, messages]);
+
 
 
     console.log(userMessages);
@@ -79,6 +86,9 @@ const ChatWindow: React.FC<TChatWindowProps> = ({ messages, isConnected, sendMes
             </div>
             <ChatInput onSendMessage={handleSendMessage} isDisabled={isThinking} />
             {/* {!isThinking && <QuickReplies onReply={handleSendMessage} />} */}
+            {/* <div className="bg-gray-100 text-gray-600 text-xs p-2 text-center">
+                Al utilizar esta herramienta, aceptas los <a href="/terminos" className="text-primary underline">términos y condiciones</a>.
+            </div> */}
         </div>
 
     );

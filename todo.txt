@@ -1,0 +1,4 @@
+1. Hay ocasiones en que no muestra las fotos
+2. A la segunda interacción sugiere contactar A un humano.
+3. Falta poner el disclaimer de que se aceptan términos y condiciones por el solo hecho de usar la herramienta.
+4. Falta obtener número y correo electrónico

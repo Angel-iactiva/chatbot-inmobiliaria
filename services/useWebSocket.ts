@@ -9,7 +9,7 @@ export const useWebSocket = (url: string) => {
   const [records, setRecords] = useState<Record[]>([]);
 
   useEffect(() => {
-    console.log("Connecting to ws");
+    console.log("Connecting to ws - ", url);
 
     // Crear conexión WebSocket
     const ws = new WebSocket(url);
